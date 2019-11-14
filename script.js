@@ -10,33 +10,67 @@ const itemCountSpan = document.getElementById('item-count')
 const uncheckedCountSpan = document.getElementById('unchecked-count')
 
 let counter = 0;
+let todoNumber = counter + 1;
 
 function newTodo() {
-  //alert('New TODO button clicked!')
+  // initialize all the elements the list will contain
+  var count = parseInt(itemCountSpan.textContent);
+  var uncheckedCount = parseInt(uncheckedCountSpan.textContent);
+  var listItemContainer = document.createElement('div');
+  var listItem = document.createElement('li');
+  var listItemText = prompt('Enter todo item: ');
+  var checkBox = document.createElement('input');
+  var deleteButton = document.createElement('button');
+
+  //increase counter variables
+  count++;
+  uncheckedCount++;
+
+  //checkbox
+  checkBox.type = 'checkbox';
+  checkBox.className = classNames.TODO_CHECKBOX;
+
+  checkBox.onclick = function() {
+    if(this.checked) {
+      uncheckedCount = parseInt(uncheckedCountSpan.textContent);
+      uncheckedCount = uncheckedCount - 1;
+      uncheckedCountSpan.textContent = uncheckedCount;
+      listItem.style.setProperty('text-decoration', 'line-through');
+    } else {
+      uncheckedCount = parseInt(uncheckedCountSpan.textContent);
+      uncheckedCount = uncheckedCount + 1;
+      uncheckedCountSpan.textContent = uncheckedCount;
+      listItem.style.setProperty('text-decoration', 'none');
+    }
+  }
+
+  //delete button
+  deleteButton.className = classNames.TODO_DELETE;
+  deleteButton.textContent = 'delete';
+
+  deleteButton.onclick = function() {
+    listItemContainer.remove();
+    count = parseInt(itemCountSpan.textContent);
+    count--;
+    itemCountSpan.textContent = count;
+    if(!checkBox.checked) {
+      uncheckedCount = parseInt(uncheckedCountSpan.textContent);
+      uncheckedCount--;
+      uncheckedCountSpan.textContent = uncheckedCount;
+    }
+  }
+
+  //todo items
+  listItem.className = classNames.TODO_ITEM;
+  listItem.textContent = '#' + todoNumber + '.  ' + listItemText + '\t';
   
-  // counter - new button
-  counter++;
-  itemCountSpan.innerHTML = counter;
-  uncheckedCountSpan.innerHTML = counter;
+  //append created items
+  listItem.appendChild(checkBox);
+  listItem.appendChild(deleteButton);
+  listItemContainer.appendChild(listItem);
+  list.appendChild(listItemContainer);
 
-  // create TODO item
-  (function addTodo() {
-    // create todo list text item
-    var listItem = document.createElement('li');
-    listItem.setAttribute('id', classNames.TODO_ITEM);
-    var itemText = document.createElement('span');
-    itemText.innerText = prompt('Enter todo item: ');
-    
-    // create todo chechbox
-    var checkBox = document.createElement('input');
-    checkBox.setAttribute('type', classNames.TODO_CHECKBOX);
-    
-    // appending the checkbox and user input to list entry
-    listItem.appendChild(checkBox);
-    //listItem.innerText = prompt('Enter todo item: ');
-    
-
-    //append
-    list.appendChild(listItem);
-  }())
+  //counters to html span
+  itemCountSpan.textContent = count;
+  uncheckedCountSpan.textContent = uncheckedCount;
 }
