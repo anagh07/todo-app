@@ -10,11 +10,11 @@ const itemCountSpan = document.getElementById('item-count')
 const uncheckedCountSpan = document.getElementById('unchecked-count')
 
 let counter = 0;
-let todoNumber = counter + 1;
 
 function newTodo() {
   // initialize all the elements the list will contain
   var count = parseInt(itemCountSpan.textContent);
+  var todoNumber = parseInt(itemCountSpan.textContent) + 1;
   var uncheckedCount = parseInt(uncheckedCountSpan.textContent);
   var listItemContainer = document.createElement('div');
   var listItem = document.createElement('li');
